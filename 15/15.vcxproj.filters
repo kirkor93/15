@@ -26,8 +26,5 @@
     <ClInclude Include="GraphNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MoveDirection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

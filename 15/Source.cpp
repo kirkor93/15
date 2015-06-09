@@ -1,7 +1,6 @@
 #include <iostream>
 #include <list>
 #include "GraphNode.h"
-#include "MoveDirection.h"
 #include <stack>
 
 
@@ -114,7 +113,6 @@ void DisplayBoard(int **board)
 
 void DFS(int **board, int maxIterations)
 {
-	//stack<MoveDirection> moves;
 	stack<GraphNode*> nodesStack;
 	list<GraphNode*> list;
 
@@ -150,7 +148,6 @@ void DFS(int **board, int maxIterations)
 
 void BFS(int **board, int maxIterations)
 {
-	//stack<MoveDirection> moves;
 	queue<GraphNode*> nodesStack;
 	list<GraphNode*> list;
 
@@ -185,6 +182,41 @@ void BFS(int **board, int maxIterations)
 	delete node;
 }
 
+void AStar(int **board, int maxIterations)
+{
+	priority_queue<GraphNode*, vector<GraphNode*>, MyComparator> nodesQueue;
+	list<GraphNode*> list;
+
+	GraphNode *node = new GraphNode(board);
+	list.push_back(node);
+	nodesQueue.push(node);
+	node->visited = true;
+	int iterations = 0;
+	while (!node->IsSolution())
+	{
+		node->visited = true;
+		node->FindNeighbours(list);
+		node->PushNeighbours(nodesQueue);
+		node = nodesQueue.top();
+		while ((node = nodesQueue.top())->visited)
+		{
+			nodesQueue.pop();
+		}
+		iterations++;
+		if (iterations > maxIterations)
+		{
+			cout << "A* exceeded max iterations value :(\n";
+			return;
+		}
+		//DisplayBoard(node->boardState);
+	}
+
+	cout << "A* did it in: " << iterations << " iterations!!!!!! \n";
+	DisplayBoard(node->boardState);
+
+	delete node;
+}
+
 int main()
 {
 	cout << "How many times do you want to shuffle the board: ";
@@ -199,6 +231,7 @@ int main()
 	cout << "Before solving: \n";
 	DisplayBoard(board);
 
+	AStar(board, iterations);
 	BFS(board, iterations);
 	DFS(board, iterations);
 	ReleaseBoard(board);

@@ -20,7 +20,7 @@ GraphNode::GraphNode(int **board)
 			this->boardState[i][j] = board[i][j];
 		}
 	}
-
+	h = CountHeuristic();
 }
 
 GraphNode::~GraphNode()
@@ -141,6 +141,7 @@ void GraphNode::AddNeighbour(int **boardState, list<GraphNode*>& membersList)
 		if ((*it)->CompareTo(boardState))
 		{
 			contiguousNodes[index] = *it;
+			return;
 		}
 	}
 
@@ -175,6 +176,17 @@ void GraphNode::PushNeighbours(stack<GraphNode*>& membersStack)
 	}
 }
 
+void GraphNode::PushNeighbours(priority_queue<GraphNode*, vector<GraphNode*>, MyComparator> &membersQueue)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (contiguousNodes[i] != nullptr && !contiguousNodes[i]->visited)
+		{
+			membersQueue.push(contiguousNodes[i]);
+		}
+	}
+}
+
 void GraphNode::PushNeighbours(queue<GraphNode*>& membersStack)
 {
 	for (int i = 0; i < 4; i++)
@@ -185,3 +197,42 @@ void GraphNode::PushNeighbours(queue<GraphNode*>& membersStack)
 		}
 	}
 }
+
+int GraphNode::CountHeuristic() const
+{
+	int result = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			int x = 0, y = 0;
+			int pos = boardState[i][j];
+			if (pos == 0)
+			{
+				pos = 16;
+			}
+			while ((x * 4 + y + 1) != pos)
+			{
+				y++;
+				if (y > 3)
+				{
+					y = 0;
+					x++;
+				}
+			}
+			int tmp = abs(i - x);
+			tmp += abs(j - y);
+			//if (pos == 16)
+			//{
+			//	tmp *= 2;
+			//}
+			result += tmp;
+		}
+	}
+	return result;
+}
+
+//bool GraphNode::operator<(const GraphNode& rhs)
+//{
+//	return this->h < rhs.h;
+//}
