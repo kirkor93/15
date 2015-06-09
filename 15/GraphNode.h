@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <list>
 #include <stack>
 #include <random>
@@ -12,15 +13,23 @@ struct MyComparator;
 
 class GraphNode
 {
+	friend MyComparator;
 public:
 	bool visited;
+
+private:
 	int **boardState;
 	int h;
 	GraphNode *contiguousNodes[4];
 
+public:
+	GraphNode();
 	GraphNode(int **board);
+	GraphNode(GraphNode *original);
 	~GraphNode();
 
+	void Shuffle(int steps);
+	void Display();
 	bool IsSolution();
 	void FindNeighbours(list<GraphNode*> &list);
 	bool CompareTo(int** other);

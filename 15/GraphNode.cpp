@@ -1,5 +1,29 @@
 #include "GraphNode.h"
 
+GraphNode::GraphNode()
+{
+	boardState = new int *[4];
+	for (int i = 0; i < 4; i ++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			boardState[i] = new int[4];
+		}	
+		contiguousNodes[i] = nullptr;
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			boardState[i][j] = i * 4 + j + 1;
+		}
+	}
+
+	boardState[3][3] = 0;
+	h = 0;
+}
+
 GraphNode::GraphNode(int **board)
 {
 	boardState = new int*[4];
@@ -23,19 +47,112 @@ GraphNode::GraphNode(int **board)
 	h = CountHeuristic();
 }
 
-GraphNode::~GraphNode()
+GraphNode::GraphNode(GraphNode *original)
 {
-	
+	boardState = new int*[4];
+	for (int i = 0; i < 4; i++)
+	{
+		boardState[i] = new int[4];
+	}
+	for (int i = 0; i < 4; i += 1)
+	{
+		for (int j = 0; j < 4; j += 1)
+		{
+			boardState[i][j] = original->boardState[i][j];
+		}
+		if (original->contiguousNodes[i] != nullptr)
+		{
+			contiguousNodes[i] = new GraphNode(original->contiguousNodes[i]);
+		}
+	}
+	h = original->h;
+	visited = original->visited;
+}
+
+GraphNode::~GraphNode()
+{	
 	for (int i = 0; i < 4; i++)
 	{
 		delete[] boardState[i];
-		if (contiguousNodes[i] != nullptr)
-		{
-			delete contiguousNodes[i];
-			contiguousNodes[i] = nullptr;
-		}
 	}
 	delete[] boardState;
+}
+
+void GraphNode::Shuffle(int steps)
+{
+	int posX = 0, posY = 0;
+
+	for (int i = 0; i < 4; i += 1)
+	{
+		for (int j = 0; j < 4; j += 1)
+		{
+			if (boardState[i][j] == 0)
+			{
+				posX = i;
+				posY = j;
+			}
+		}
+	}
+	unsigned seed = (unsigned int)chrono::system_clock::now().time_since_epoch().count();
+	minstd_rand0 generator(seed);
+	for (int i = 0; i < steps; i += 1)
+	{
+		int lastCase = -1;
+		int newPosX = 0;
+		int newPosY = 0;
+		do
+		{
+			newPosX = posX;
+			newPosY = posY;
+
+			int direction = generator() % 4;
+			if (direction == lastCase)
+			{
+				continue;
+			}
+			switch (direction)
+			{
+			case 0:
+				lastCase = 2;
+				newPosX += 1;
+				break;
+			case 1:
+				lastCase = 3;
+				newPosY += 1;
+				break;
+			case 2:
+				lastCase = 0;
+				newPosX -= 1;
+				break;
+			case 3:
+				lastCase = 1;
+				newPosY -= 1;
+				break;
+			}
+
+		} while (newPosX < 0 || newPosY < 0 || newPosX > 3 || newPosY > 3);
+
+		int tmp = boardState[posX][posY];
+		boardState[posX][posY] = boardState[newPosX][newPosY];
+		boardState[newPosX][newPosY] = tmp;
+
+		posX = newPosX;
+		posY = newPosY;
+	}
+	h = CountHeuristic();
+}
+
+void GraphNode::Display()
+{
+	for (int i = 0; i < 4; i += 1)
+	{
+		for (int j = 0; j < 4; j += 1)
+		{
+			cout << boardState[i][j] << "\t";
+		}
+		cout << endl;
+	}
+	cout << endl;
 }
 
 bool GraphNode::IsSolution()
@@ -222,17 +339,8 @@ int GraphNode::CountHeuristic() const
 			}
 			int tmp = abs(i - x);
 			tmp += abs(j - y);
-			//if (pos == 16)
-			//{
-			//	tmp *= 2;
-			//}
 			result += tmp;
 		}
 	}
 	return result;
 }
-
-//bool GraphNode::operator<(const GraphNode& rhs)
-//{
-//	return this->h < rhs.h;
-//}
