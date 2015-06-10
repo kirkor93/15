@@ -37,7 +37,6 @@ public:
 	void PushNeighbours(queue<GraphNode*>& membersStack);
 	void PushNeighbours(priority_queue<GraphNode*, vector<GraphNode*>, MyComparator> &membersQueue);
 	int CountHeuristic() const;
-	//bool operator<(const GraphNode& rhs);
 
 private:
 	void CloneBoard(int **original, int **cloned);

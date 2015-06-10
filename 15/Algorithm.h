@@ -18,4 +18,3 @@ public:
 protected:
 	void ShowResult(bool succeded, int iterations, GraphNode *finalNode = nullptr);
 };
-
