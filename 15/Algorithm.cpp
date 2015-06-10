@@ -5,6 +5,7 @@ Algorithm::~Algorithm()
 	for (list<GraphNode*>::iterator it = elements.begin(); it != elements.end(); it++)
 	{
 		delete *it;
+		*it = nullptr;
 	}
 }
 

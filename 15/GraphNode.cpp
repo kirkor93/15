@@ -230,6 +230,11 @@ void GraphNode::FindNeighbours(list<GraphNode*>& membersList)
 		clonedBoard[posX][posY + 1] = tmp;
 		AddNeighbour(clonedBoard, membersList);
 	}
+	for (int i = 0; i < 4; i++)
+	{
+		delete[] clonedBoard[i];
+	}
+	delete[] clonedBoard;
 }
 
 void GraphNode::CloneBoard(int **original, int **cloned)
