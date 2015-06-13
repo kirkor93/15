@@ -7,15 +7,13 @@ using namespace std;
 
 int main()
 {
-	cout << "How many times do you want to shuffle the board: ";
-	int counter;
-	cin >> counter;
+	GraphNode *startNode = new GraphNode();
+	startNode->ShuffleManually();
+
 	cout << "Max iterations: ";
 	int iterations;
 	cin >> iterations;
 
-	GraphNode *startNode = new GraphNode();
-	startNode->Shuffle(counter);
 	cout << "Before solving: \n";
 	startNode->Display();
 
@@ -24,6 +22,6 @@ int main()
 	DFS(startNode, iterations);
 
 	delete startNode;
-	cin >> counter;
+	_getch();
 	return 0;
 }

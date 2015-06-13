@@ -142,6 +142,78 @@ void GraphNode::Shuffle(int steps)
 	h = CountHeuristic();
 }
 
+void GraphNode::ShuffleManually()
+{
+	int posX = 0, posY = 0;
+	int newPosX, newPosY;
+
+	for (int i = 0; i < 4; i += 1)
+	{
+		for (int j = 0; j < 4; j += 1)
+		{
+			if (boardState[i][j] == 0)
+			{
+				posX = i;
+				posY = j;
+			}
+		}
+	}
+	newPosX = posX;
+	newPosY = posY;
+	int moves = 0;
+	char key = '0';
+	do
+	{
+		system("CLS");
+		cout << "Use W, S, A, D to shuffle the board \nSpace bar to finish \n\n";
+		Display();
+		cout << "Moves: " << moves << endl;
+		key = _getch();
+		switch (key)
+		{
+		case 'w':
+		case 'W':
+			if (newPosX > 0)
+			{
+				newPosX--;
+				moves++;
+			}
+			break;
+		case 's':
+		case 'S':
+			if (newPosX < 3)
+			{
+				newPosX++;
+				moves++;
+			}
+			break;
+		case 'a':
+		case 'A':
+			if (newPosY > 0)
+			{
+				newPosY --;
+				moves++;
+			}
+			break;
+		case 'd':
+		case 'D':
+			if (newPosY < 3)
+			{
+				newPosY++;
+				moves++;
+			}
+			break;
+		}
+		int tmp = boardState[posX][posY];
+		boardState[posX][posY] = boardState[newPosX][newPosY];
+		boardState[newPosX][newPosY] = tmp;
+
+		posX = newPosX;
+		posY = newPosY;
+	} while (key != ' ');
+}
+
+
 void GraphNode::Display()
 {
 	for (int i = 0; i < 4; i += 1)

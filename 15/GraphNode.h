@@ -6,6 +6,7 @@
 #include <random>
 #include <chrono>
 #include <queue>
+#include <conio.h>
 
 using namespace std;
 
@@ -29,6 +30,7 @@ public:
 	~GraphNode();
 
 	void Shuffle(int steps);
+	void ShuffleManually();
 	void Display();
 	bool IsSolution();
 	void FindNeighbours(list<GraphNode*> &list);
