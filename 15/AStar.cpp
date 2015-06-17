@@ -1,10 +1,14 @@
 #include "AStar.h"
 
 
-AStar::AStar(GraphNode *startNode, int maxIterations)
+AStar::AStar() : Algorithm()
 {
 	name = "A*";
+}
 
+void AStar::Solve(GraphNode *startNode, int maxIterations)
+{
+	StartTimer();
 	priority_queue<GraphNode*, vector<GraphNode*>, MyComparator> nodesQueue;
 
 	GraphNode *node = new GraphNode(startNode);
@@ -29,6 +33,6 @@ AStar::AStar(GraphNode *startNode, int maxIterations)
 			return;
 		}
 	}
+	StopTimer();
 	ShowResult(true, iterations, node);
 }
-

@@ -6,5 +6,6 @@ class AStar :
 	public Algorithm
 {
 public:
-	AStar(GraphNode *startNode, int maxIterations);
+	AStar();
+	virtual void Solve(GraphNode *startNode, int maxIterations);
 };

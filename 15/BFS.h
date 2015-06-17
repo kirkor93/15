@@ -6,6 +6,6 @@ class BFS :
 	public Algorithm
 {
 public:
-	BFS(GraphNode *startNode, int maxIterations);
+	BFS();
+	virtual void Solve(GraphNode *startNode, int maxIterations);
 };
-

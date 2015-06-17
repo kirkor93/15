@@ -17,9 +17,12 @@ int main()
 	cout << "Before solving: \n";
 	startNode->Display();
 
-	AStar(startNode, iterations);
-	BFS(startNode, iterations);
-	DFS(startNode, iterations);
+	AStar aStar;
+	aStar.Solve(startNode, iterations);
+	BFS bfs;
+	bfs.Solve(startNode, iterations);
+	DFS dfs;
+	dfs.Solve(startNode, iterations);
 
 	delete startNode;
 	_getch();

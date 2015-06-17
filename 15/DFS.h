@@ -6,6 +6,7 @@ class DFS :
 	public Algorithm
 {
 public:
-	DFS(GraphNode *startNode, int maxIterations);
+	DFS();
+	virtual void Solve(GraphNode *startNode, int maxIterations);
 };
 

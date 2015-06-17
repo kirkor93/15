@@ -1,10 +1,14 @@
 #include "DFS.h"
 
 
-DFS::DFS(GraphNode *startNode, int maxIterations)
+DFS::DFS() : Algorithm()
 {
 	name = "DFS";
+}
 
+void DFS::Solve(GraphNode *startNode, int maxIterations)
+{
+	StartTimer();
 	stack<GraphNode*> nodesStack;
 
 	GraphNode *node = new GraphNode(startNode);
@@ -29,5 +33,6 @@ DFS::DFS(GraphNode *startNode, int maxIterations)
 			return;
 		}
 	}
+	StopTimer();
 	ShowResult(true, iterations, node);
 }

@@ -1,10 +1,14 @@
 #include "BFS.h"
 
 
-BFS::BFS(GraphNode *startNode, int maxIterations)
+BFS::BFS() : Algorithm()
 {
 	name = "BFS";
+}
 
+void BFS::Solve(GraphNode *startNode, int maxIterations)
+{
+	StartTimer();
 	queue<GraphNode*> nodesQueue;
 
 	GraphNode *node = new GraphNode(startNode);
@@ -30,5 +34,6 @@ BFS::BFS(GraphNode *startNode, int maxIterations)
 			return;
 		}
 	}
+	StopTimer();
 	ShowResult(true, iterations, node);
 }
