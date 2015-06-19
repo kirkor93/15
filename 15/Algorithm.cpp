@@ -1,10 +1,5 @@
 #include "Algorithm.h"
 
-Algorithm::Algorithm()
-{
-	elapsedTime = 0;
-}
-
 Algorithm::~Algorithm()
 {
 	for (list<GraphNode*>::iterator it = elements.begin(); it != elements.end(); it++)
@@ -18,7 +13,7 @@ void Algorithm::ShowResult(bool succeded, int iterations, GraphNode *finalNode)
 {
 	if (succeded)
 	{
-		cout << name << " succeded after " << iterations << " iterations: \nand " << elapsedTime << " seconds\n";
+		cout << name << " succeded after " << iterations << " iterations: \nand " << elapsedTime.count() << " miliseconds\n";
 		ShowMemory();
 		if (finalNode != nullptr)
 		{
@@ -33,13 +28,12 @@ void Algorithm::ShowResult(bool succeded, int iterations, GraphNode *finalNode)
 
 void Algorithm::StartTimer()
 {
-	timer = clock();
+	timer = chrono::system_clock::now();
 }
 
 void Algorithm::StopTimer()
 {
-	clock_t endTime = clock();
-	elapsedTime = (double)(endTime - timer) / CLOCKS_PER_SEC;
+	elapsedTime = chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now() - timer);
 }
 
 void Algorithm::ShowMemory()

@@ -4,6 +4,7 @@
 #include <string>
 #include <list>
 #include <ctime>
+#include <chrono>
 #include "GraphNode.h"
 
 using namespace std;
@@ -13,12 +14,11 @@ class Algorithm
 protected:
 	list<GraphNode*> elements;
 	string name;
-	double elapsedTime;
+	chrono::milliseconds elapsedTime;
 private:
-	clock_t timer;
+	chrono::system_clock::time_point timer;
 
 public:
-	Algorithm();
 	virtual ~Algorithm();
 	virtual void Solve(GraphNode *startNode, int maxIterations) = 0;
 protected:

@@ -30,6 +30,7 @@ void DFS::Solve(GraphNode *startNode, int maxIterations)
 		if (iterations > maxIterations)
 		{
 			ShowResult(false, iterations);
+			StopTimer();
 			return;
 		}
 	}
